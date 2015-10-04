@@ -31,7 +31,7 @@ public class ExampleApplication extends Application {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("localhost:8080");
+        beanConfig.setHost(getApplicationHostAndPort());
         beanConfig.setBasePath("/cache-example/api");
         beanConfig.setResourcePackage("com.samolsen.resteasy.cache.redis.example");
         beanConfig.setScan(true);
@@ -64,6 +64,12 @@ public class ExampleApplication extends Application {
         JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), host, port, timeout, password);
         RedisCache redisCache = new RedisCache(jedisPool, "cacheExample");
         return new ServerCacheFeature(redisCache);
+    }
+
+    private String getApplicationHostAndPort()
+    {
+        ResourceBundle bundle = ResourceBundle.getBundle("host");
+        return bundle.getString("host") + ":" + bundle.getString("port");
     }
 
 }

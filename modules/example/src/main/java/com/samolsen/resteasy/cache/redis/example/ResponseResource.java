@@ -2,13 +2,13 @@ package com.samolsen.resteasy.cache.redis.example;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.jboss.resteasy.annotations.cache.Cache;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Date;
 
 
 @Path("/responses")
@@ -17,23 +17,22 @@ import java.util.Date;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ResponseResource {
 
-    private static int COUNT = 0;
-
     @GET
-    @ApiOperation(value = "Get cache-able response", response = ResponseModel.class)
+    @Path("/cached")
+    @ApiOperation(value = "Get a response which may be served from the server-side cahce")
     @Cache(maxAge = 30)
-    @NotNull
-    public ResponseModel getCount( @QueryParam("someParam") @Nullable String someParam )
+    public ResponseModel getCount(
+            @ApiParam(value = "Full URLs are cached. Changing a query param will result in a cache miss", required = false)
+            @QueryParam("someParam") String someParam )
     {
-        return new ResponseModel(++COUNT, new Date());
+        return new ResponseModel();
     }
 
     @GET
     @Path("/noCache")
-    @ApiOperation(value = "Get response which should never come from the cache", response = ResponseModel.class)
-    @NotNull
-    public ResponseModel getCountNoCache( @QueryParam("someParam") @Nullable String someParam )
+    @ApiOperation(value = "Get response which should never come from the server-side cache")
+    public ResponseModel getCountNoCache()
     {
-        return getCount(someParam);
+        return new ResponseModel();
     }
 }
