@@ -122,6 +122,12 @@
                 </exclusions>
             </dependency>
 
+            <dependency>
+                <groupId>com.intellij</groupId>
+                <artifactId>annotations</artifactId>
+                <version>12.0</version>
+            </dependency>
+
             <!-- Provided dependencies. Jackson 2.4.1 comes with Resteasy 3 -->
 
             <dependency>

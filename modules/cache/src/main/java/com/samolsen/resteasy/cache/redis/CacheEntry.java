@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.jboss.resteasy.plugins.cache.server.ServerCache;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -31,18 +33,22 @@ import java.io.IOException;
  */
 class CacheEntry implements ServerCache.Entry {
 
+    @NotNull
     byte[] _cached;
     int _expires;
     long _timestamp;
+    @NotNull
     MultivaluedMap<String, Object> _headers;
+    @Nullable
     String _etag;
+    @NotNull
     MediaType _mediaType;
 
-    CacheEntry( MultivaluedMap<String, Object> headers,
-                byte[] cached,
+    CacheEntry( @NotNull MultivaluedMap<String, Object> headers,
+                @NotNull byte[] cached,
                 int expires,
-                String etag,
-                MediaType mediaType )
+                @Nullable String etag,
+                @NotNull MediaType mediaType )
     {
         _headers = headers;
         _cached = cached;
@@ -52,11 +58,11 @@ class CacheEntry implements ServerCache.Entry {
         _timestamp = System.currentTimeMillis();
     }
 
-    private CacheEntry( MultivaluedMap<String, Object> headers,
-                        byte[] cached,
+    private CacheEntry( @NotNull MultivaluedMap<String, Object> headers,
+                        @NotNull byte[] cached,
                         int expires,
-                        String etag,
-                        MediaType mediaType,
+                        @Nullable String etag,
+                        @NotNull MediaType mediaType,
                         long timestamp )
     {
         _headers = headers;
@@ -80,24 +86,28 @@ class CacheEntry implements ServerCache.Entry {
         return System.currentTimeMillis() - _timestamp >= _expires * 1000;
     }
 
+    @Nullable
     @Override
     public String getEtag()
     {
         return _etag;
     }
 
+    @NotNull
     @Override
     public MultivaluedMap<String, Object> getHeaders()
     {
         return _headers;
     }
 
+    @NotNull
     @Override
     public byte[] getCached()
     {
         return _cached;
     }
 
+    @NotNull
     public MediaType getMediaType()
     {
         return _mediaType;

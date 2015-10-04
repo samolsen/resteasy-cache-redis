@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import org.jetbrains.annotations.NotNull;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -60,7 +61,8 @@ class MultivaluedMapDeserializer extends JsonDeserializer<MultivaluedMap> {
         return map;
     }
 
-    private List<Object> parseList( JsonParser jsonParser )
+    @NotNull
+    private List<Object> parseList( @NotNull JsonParser jsonParser )
             throws IOException
     {
         List<Object> list = new LinkedList<Object>();
@@ -105,7 +107,8 @@ class MultivaluedMapDeserializer extends JsonDeserializer<MultivaluedMap> {
         return list;
     }
 
-    private Map<String, Object> parseMap( JsonParser jsonParser )
+    @NotNull
+    private Map<String, Object> parseMap( @NotNull JsonParser jsonParser )
             throws IOException
     {
         Map<String, Object> map = new HashMap<String, Object>();
