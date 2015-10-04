@@ -64,7 +64,7 @@ public class ResponseResource {
     @Cache(maxAge = 30)
     public ResponseModel getCount()
     {
-        return new ResponseModel(++COUNT, new Date());
+        return new ResponseModel();
     }
 }
 ```
