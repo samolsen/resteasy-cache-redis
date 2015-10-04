@@ -43,36 +43,66 @@ public class RedisCache implements ServerCache {
 
     static final String KEY_DELIMITER = ":";
 
+    /**
+     * Caller provided {@link JedisPool}
+     */
     @NotNull
-    protected JedisPool _jedisPool;
+    protected final JedisPool _jedisPool;
+    /**
+     * Namespace for cache keys. When not null, appended to the beginning of each key.
+     */
     @Nullable
-    protected String _namespace;
+    protected final String _namespace;
+    /**
+     * Cache entries are serialized using a Jackson {@link ObjectMapper}. The object mapper instance
+     * may be provided by the caller. Note: additional JSON serializers/deserializers are added
+     * to the mapper.
+     *
+     * @see {@link CacheSerializationModule}
+     */
     @NotNull
-    protected ObjectMapper _objectMapper;
+    protected final ObjectMapper _objectMapper;
+    /**
+     * Cache responses are indexed by URI and content type. To support wildcard `Accepts:`,
+     * references to all cached responses per-URI are stored in a set. This set is given an
+     * appropriately long TTL to prevent orphaned data in the cache.
+     *
+     * @see {@link RedisCache#add(String, MediaType, CacheControl, MultivaluedMap, byte[], String)}
+     */
+    protected final int _contentTypeSetExpirationSeconds = (int) TimeUnit.DAYS.toSeconds(1);
 
-    protected int _uriExpirationSeconds = (int) TimeUnit.DAYS.toSeconds(30);
-
+    /**
+     * @param jedisPool pool for obtaining a Redis client
+     */
     public RedisCache( JedisPool jedisPool )
     {
         this(jedisPool, null);
     }
 
+    /**
+     * @param jedisPool pool for obtaining a Redis client
+     * @param namespace namespace for cache keys. When not null, appended to the beginning of each key
+     */
     public RedisCache( @NotNull JedisPool jedisPool,
                        @Nullable String namespace )
     {
         this(jedisPool, namespace, null);
     }
 
-
+    /**
+     * @param jedisPool    pool for obtaining a Redis client
+     * @param namespace    namespace for cache keys. When not null, appended to the beginning of each key
+     * @param objectMapper {@link ObjectMapper} instance for serializing cache entries
+     */
     public RedisCache( @NotNull JedisPool jedisPool,
                        @Nullable String namespace,
                        @Nullable ObjectMapper objectMapper )
     {
-        this._jedisPool = jedisPool;
-        this._namespace = namespace;
-        this._objectMapper = objectMapper != null ? objectMapper : new ObjectMapper();
+        _jedisPool = jedisPool;
+        _namespace = namespace;
+        _objectMapper = objectMapper != null ? objectMapper : new ObjectMapper();
 
-        this._objectMapper.registerModule(new CacheSerializationModule());
+        _objectMapper.registerModule(new CacheSerializationModule());
     }
 
     @Nullable
@@ -130,7 +160,7 @@ public class RedisCache implements ServerCache {
         CacheEntry cacheEntry = new CacheEntry(headers, entity, entryMaxAge, etag, mediaType);
 
         String uriCacheKey = toCacheKey(uri);
-        int uriMaxAge = Math.max(_uriExpirationSeconds, entryMaxAge);
+        int uriMaxAge = Math.max(_contentTypeSetExpirationSeconds, entryMaxAge);
 
         Jedis jedis = null;
         try
@@ -184,6 +214,7 @@ public class RedisCache implements ServerCache {
         }
         catch( IOException e )
         {
+            // TODO: Log something?
             return null;
         }
     }
