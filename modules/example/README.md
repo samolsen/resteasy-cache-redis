@@ -13,4 +13,5 @@ mvn package && docker-compose build && docker-compose up
 Depending on your environment, you may need to update values in
 `host.properties` and/or `redis.properties`.
 
-Once deployed, you may
+Once deployed, you may direct your browser to `http://{host}:{port}/cache-example/`
+to view an API console demonstrating cache-able and no-cache methods.

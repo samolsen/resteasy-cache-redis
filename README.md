@@ -69,6 +69,10 @@ public class ResponseResource {
 }
 ```
 
+## Example Application
+
+An example application is included in [modules/example](modules/example).
+
 ## License
 
 Copyright (c) 2015, Sam Olsen
