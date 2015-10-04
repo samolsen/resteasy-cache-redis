@@ -87,6 +87,18 @@
             <version>2.7.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-cache-core</artifactId>
+            <version>${resteasy.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>jaxrs-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- Provided dependencies. Jackson 2.4.1 comes with Resteasy 3 -->
 
         <dependency>
@@ -105,9 +117,8 @@
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-cache-core</artifactId>
+            <artifactId>resteasy-jaxrs</artifactId>
             <version>${resteasy.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Test Dependencies -->
