@@ -112,10 +112,7 @@ public class RedisCache implements ServerCache {
         }
         finally
         {
-            if( jedis != null )
-            {
-                jedis.close();
-            }
+            close(jedis);
         }
     }
 
@@ -148,10 +145,7 @@ public class RedisCache implements ServerCache {
         }
         finally
         {
-            if( jedis != null )
-            {
-                jedis.close();
-            }
+            close(jedis);
         }
     }
 
@@ -232,17 +226,13 @@ public class RedisCache implements ServerCache {
         }
         finally
         {
-            if( jedis != null )
-            {
-                jedis.close();
-            }
+            close(jedis);
         }
     }
 
     private void flushDB()
     {
         Jedis jedis = null;
-
         try
         {
             jedis = _jedisPool.getResource();
@@ -250,10 +240,15 @@ public class RedisCache implements ServerCache {
         }
         finally
         {
-            if( jedis != null )
-            {
-                jedis.close();
-            }
+            close(jedis);
+        }
+    }
+
+    private void close( @Nullable Jedis jedis )
+    {
+        if( jedis != null )
+        {
+            jedis.close();
         }
     }
 
