@@ -3,15 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.samolsen.resteasy-cache-redis.metadata</groupId>
-        <artifactId>resteasy-cache-redis</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
 
     <groupId>com.samolsen.resteasy-cache-redis</groupId>
     <artifactId>resteasy-cache-redis</artifactId>
+    <version>1.0.0</version>
 
     <name>Resteasy Cache with Redis</name>
     <description>A Redis backed cache for server side JAX-RS response caching</description>
@@ -45,15 +40,96 @@
         <resteasy.version>3.0.10.Final</resteasy.version>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <createChecksum>true</createChecksum>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+            <version>2.7.2</version>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-cache-core</artifactId>
+            <version>${resteasy.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.resteasy</groupId>
@@ -65,6 +141,7 @@
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>annotations</artifactId>
+            <version>12.0</version>
         </dependency>
 
         <!-- Provided dependencies. Jackson 2.4.1 comes with Resteasy 3 -->
@@ -72,18 +149,21 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>2.4.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${resteasy.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
+            <version>${resteasy.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -91,12 +171,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>tjws</artifactId>
+            <version>${resteasy.version}</version>
             <scope>test</scope>
         </dependency>
 

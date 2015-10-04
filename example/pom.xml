@@ -3,15 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.samolsen.resteasy-cache-redis.metadata</groupId>
-        <artifactId>resteasy-cache-redis</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
 
-    <groupId>com.samolsen.resteasy-redis-cache</groupId>
+    <groupId>com.samolsen.resteasy-cache-redis</groupId>
     <artifactId>example</artifactId>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <name>Example War</name>
 
@@ -23,6 +18,14 @@
                 <version>2.6</version>
                 <configuration>
                     <warName>cache-example</warName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
@@ -38,12 +41,13 @@
         <dependency>
             <groupId>com.intellij</groupId>
             <artifactId>annotations</artifactId>
+            <version>12.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-spec-api</artifactId>
-            <version>8.2.0.Final</version>
+            <version>8.2.1.Final</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
