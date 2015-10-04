@@ -37,7 +37,7 @@ class CacheSerializationModule extends SimpleModule {
         addSerializer(MediaType.class, new MediaTypeSerializer());
         addDeserializer(MediaType.class, new MediaTypeDeserializer());
 
-        addDeserializer(MultivaluedMap.class, new MultiValueMapDeserializer());
+        addDeserializer(MultivaluedMap.class, new MultivaluedMapDeserializer());
     }
 
 }
