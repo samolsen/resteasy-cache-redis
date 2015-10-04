@@ -39,7 +39,7 @@ public class ExampleApplication extends Application {
         ServerCacheFeature cacheFeature = ServerCacheFeature(redisCache);
         _singletons.add(cacheFeature);
 
-        /* Add your resource classes
+        /* Add your resource classes */
         _classes.add(ResponseResource.class);
     }
 
