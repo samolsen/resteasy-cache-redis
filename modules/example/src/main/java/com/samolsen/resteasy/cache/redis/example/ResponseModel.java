@@ -2,6 +2,7 @@ package com.samolsen.resteasy.cache.redis.example;
 
 
 import io.swagger.annotations.ApiModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -9,10 +10,10 @@ import java.util.Date;
 public class ResponseModel {
 
     private final int _id;
-    private final Date _date;
+    @NotNull private final Date _date;
 
     public ResponseModel( int id,
-                          Date date )
+                          @NotNull Date date )
     {
         _id = id;
         _date = date;
@@ -23,6 +24,7 @@ public class ResponseModel {
         return _id;
     }
 
+    @NotNull
     public Date getDate()
     {
         return _date;

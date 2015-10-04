@@ -3,11 +3,10 @@ package com.samolsen.resteasy.cache.redis.example;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jboss.resteasy.annotations.cache.Cache;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 
@@ -21,10 +20,20 @@ public class ResponseResource {
     private static int COUNT = 0;
 
     @GET
-    @ApiOperation(value = "Get response", response = ResponseModel.class)
+    @ApiOperation(value = "Get cache-able response", response = ResponseModel.class)
     @Cache(maxAge = 30)
-    public ResponseModel getCount()
+    @NotNull
+    public ResponseModel getCount( @QueryParam("someParam") @Nullable String someParam )
     {
         return new ResponseModel(++COUNT, new Date());
+    }
+
+    @GET
+    @Path("/noCache")
+    @ApiOperation(value = "Get response which should never come from the cache", response = ResponseModel.class)
+    @NotNull
+    public ResponseModel getCountNoCache( @QueryParam("someParam") @Nullable String someParam )
+    {
+        return getCount(someParam);
     }
 }
